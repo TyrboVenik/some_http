@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Your games</h1>
+<div id="game-filter-div" style="padding: 0;">
+    <ul id="gamelist"></ul>
+</div>
+
+<div id="inp">
+    <h1>Add Some Games</h1>
+    <div> name</div>
+    <input id="name"/>
+    <br>
+    <div> price</div>
+    <input id="price"/>
+    <br>
+    <br>
+    <br>
+    <div> username</div>
+    <input id="username"/>
+    <br>
+    <div> password</div>
+    <input id="password"/>
+    <br>
+    <button type="button" onclick="addGame()">Add game</button>
+</div>
+
+<script>
+function addGame() {
+    var nameNode = document.getElementById("name");
+    var priceNode = document.getElementById("price");
+    var usernameNode = document.getElementById("username");
+    var passwordNode = document.getElementById("password");
+
+
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        loadDoc();
+    };
+
+    xhttp.open("POST", "games?username=" + usernameNode.value + "&password=" + passwordNode.value, true);
+    xhttp.send(JSON.stringify({ name: nameNode.value, price: priceNode.value}));
+
+}
+function loadDoc() {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    var games = JSON.parse(this.responseText);
+    var gamelist = document.getElementById("gamelist");
+
+    gamelist.innerHTML = "";
+
+    games.forEach(function (game) {
+        var li = document.createElement("li");
+        li.textContent = game["name"] + " --- " + game["price"];
+
+        gamelist.appendChild(li);
+    });
+  };
+  xhttp.open("GET", "games", true);
+  xhttp.send();
+}
+
+loadDoc();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+    <h1>Find Some Games</h1>
+    <button type="button" onclick="loadDoc()">Change Content</button>
+</div>
+
+<div id="game-filter-div" style="padding: 0;">
+    <ul id="gamelist"></ul>
+</div>
+
+<script>
+function loadDoc() {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    var games = JSON.parse(this.responseText);
+    var gamelist = document.getElementById("gamelist");
+
+    gamelist.innerHTML = "";
+
+    games.forEach(function (game) {
+        var li = document.createElement("li");
+        li.textContent = game["name"] + " --- " + game["price"];
+
+        gamelist.appendChild(li);
+    });
+  };
+  xhttp.open("GET", "games", true);
+  xhttp.send();
+}
+
+</script>
+
+</body>
+</html>
